@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="data:,">
+  <title>跳一跳</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      overscroll-behavior: none;
+    }
+
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #1b1f26 0%, #050608 70%);
+      overflow: hidden;
+    }
+
+    #frame {
+      position: relative;
+      width: 414px;
+      height: 736px;
+      overflow: hidden;
+      transform-origin: center center;
+      background: #0a0d12;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
+      touch-action: none;
+    }
+
+    #game-canvas {
+      display: block;
+      width: 414px;
+      height: 736px;
+      touch-action: none;
+    }
+
+    #status {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+      color: #cfcfcf;
+      font: 14px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      text-align: center;
+      background: #0a0d12;
+      pointer-events: none;
+      transition: opacity .35s ease;
+      z-index: 10;
+    }
+
+    #avatar-tools {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 50;
+      font: 12px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #ddd;
+    }
+
+    #avatar-toggle {
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 16px;
+      background: rgba(20, 24, 30, .82);
+      color: #eee;
+      font-size: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+
+    #avatar-toggle:hover {
+      background: rgba(34, 40, 50, .92);
+    }
+
+    #avatar-panel {
+      width: 188px;
+      margin-top: 8px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      background: rgba(20, 24, 30, .94);
+      border: 1px solid rgba(255, 255, 255, .12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #avatar-panel[hidden] {
+      display: none;
+    }
+
+    .avatar-upload {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #2f9e57;
+      color: #fff;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .avatar-upload:hover {
+      background: #36b463;
+    }
+
+    .avatar-upload input {
+      display: none;
+    }
+
+    .avatar-check {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      color: #cfcfcf;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    #avatar-reset {
+      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 8px;
+      background: transparent;
+      color: #ccc;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    #avatar-reset:hover {
+      background: rgba(255, 255, 255, .08);
+    }
+
+    #avatar-msg {
+      min-height: 15px;
+      font-size: 11px;
+      color: #9fd6b0;
+      word-break: break-all;
+    }
+
+    #avatar-msg.err {
+      color: #ff9c8f;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div id="frame">
+      <canvas id="game-canvas"></canvas>
+      <div id="status">正在加载…</div>
+    </div>
+  </div>
+  <div id="avatar-tools">
+    <button id="avatar-toggle" type="button">换形象</button>
+    <div id="avatar-panel" hidden>
+      <label class="avatar-upload">上传人物照片
+        <input id="avatar-file" type="file" accept="image/*">
+      </label>
+      <label class="avatar-check">
+        <input id="avatar-cutout" type="checkbox" checked>
+        自动去除纯色背景
+      </label>
+      <button id="avatar-reset" type="button">恢复原形象</button>
+      <div id="avatar-msg"></div>
+    </div>
+  </div>
+  <script src="h5-adapter.js?v=3"></script>
+  <script src="avatar.js?v=3"></script>
+</body>
+</html>
